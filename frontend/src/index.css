@@ -13,6 +13,10 @@ code {
     monospace;
 }
 
+input {
+  outline: none;
+}
+
 @font-face {
   font-family: passionone;
   src: url('./assets/fonts/passionone.ttf');

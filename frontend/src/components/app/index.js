@@ -1,18 +1,19 @@
-import logo from '../../assets/images/logo.png';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { AuthPage, LobbyPage, GamePage } from '../index'
+
+//import logo from '../../assets/images/logo.png';
 import './app.css';
 
 function App() {
   return (
     <div id="container">
-      <div id="content">
-        <img id="logo" src={logo} alt="Logo"/>
-        <h1 id="headline">TavernPoker</h1>
-        <form id="login-form">
-        <input type="text" placeholder="Username..."/>
-        <input type="password" placeholder="Password..."/>
-        <input type="button" value="login"/>
-      </form>
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/"><AuthPage/></Route>
+          <Route path="/lobby"><LobbyPage/></Route>
+          <Route path="/lobby/:id"><GamePage/></Route>
+        </Switch>
+      </Router>
     </div>
   )
 }
