@@ -14,16 +14,19 @@ const Form = styled.form`
 function Login() {
   return (
     <Content>
-      <Formik initialValues={{ username: '', password: '' }} onSubmit={(values) => {
-        console.log(values)
-       }}>
-         {({values, handleSubmit, handleChange}) => (
-            <Form onSubmit={handleSubmit}>
-              <input type="text" name="username" placeholder="Username..." value={values.username} onChange={handleChange}/>
-              <input type="password" name="password" placeholder="Password..." value={values.password} onChange={handleChange}/>
-              <DefaultButton text="Login" margin="auto" clicked={handleSubmit} />
-            </Form>
-          )}
+      <Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={(values) => {
+          console.log(values)
+        }}>
+        {({ values, handleSubmit, handleChange }) => (
+          <Form onSubmit={handleSubmit}>
+            <input type="text" name="username" placeholder="Username..." value={values.username} onChange={handleChange} />
+            <input type="password" name="password" placeholder="Password..." value={values.password} onChange={handleChange} />
+            <br/>
+            <DefaultButton text="Login" margin="auto" clicked={handleSubmit} />
+          </Form>
+        )}
       </Formik>
     </Content>
   )

@@ -15,24 +15,28 @@ const SignUpButton = styled.input`
 `
 
 function AuthPage() {
-  const [showLogin, setLogin] = useState(true)
+  const [showLogin, setShowLogin] = useState(true)
+  const [signUpButtonText, setSignUpButtonText] = useState('No account? Sign up!')
 
   function signUpButtonPressed() {
-  console.log('Value ' + showLogin)
-  if (showLogin) {
-    setLogin(false)
-  } else {
-    setLogin(true)
+    if (showLogin) {
+      setShowLogin(false)
+      setSignUpButtonText('Go back')
+    } else {
+      setShowLogin(true)
+      setSignUpButtonText('No account? Sign up!')
+    }
   }
-}
 
   return (
     <Div>
       <div id="content">
         <img id="logo" src={logo} alt="Logo" />
         <h1 id="headline">TavernPoker</h1>
-        {showLogin ? <Login/> : <SignUp/>}
-        <SignUpButton type="button" value="No account? Sign up!" onClick={signUpButtonPressed} />
+        <br/>
+        {showLogin ? <Login /> : <SignUp />}
+        <br/>
+        <SignUpButton type="button" value={signUpButtonText} onClick={signUpButtonPressed} />
       </div>
     </Div>
   )

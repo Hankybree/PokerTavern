@@ -14,17 +14,36 @@ const Form = styled.form`
 function SignUp() {
   return (
     <Content>
-      <Formik initialValues={{ username: '', password: '', confirmPassword: '' }} onSubmit={(values) => {
-        console.log(values)
-       }}>
-         {({values, handleSubmit, handleChange}) => (
-            <Form onSubmit={handleSubmit}>
-              <input type="text" name="username" placeholder="Username..." value={values.username} onChange={handleChange}/>
-              <input type="password" name="password" placeholder="Password..." value={values.password} onChange={handleChange}/>
-              <input type="password" name="confirmPassword" placeholder="Confirm password..." value={values.confirmPassword} onChange={handleChange}/>
-              <DefaultButton text="Login" margin="auto" clicked={handleSubmit} />
-            </Form>
-          )}
+      <Formik
+        initialValues={{ username: '', password: '', confirmPassword: '' }}
+        validate={(values) => {
+          const errors = {}
+          if (values.password !== values.confirmPassword) {
+            errors.password = 'Passwords does not match'
+          }
+          if (!values.username || values.username.length < 6) {
+            errors.username = 'Username needs to be atleast 6 characters'
+          }
+          if (!values.password || values.password.length < 6) {
+            errors.password = 'Password needs to be atleast 6 characters'
+          }
+
+          return errors
+        }}
+        onSubmit={(values) => {
+          console.log(values)
+        }}>
+        {({ values, errors, touched, handleSubmit, handleChange }) => (
+          <Form onSubmit={handleSubmit}>
+            {errors.username && touched.username && errors.username}
+            <input type="text" name="username" placeholder="Username..." value={values.username} onChange={handleChange} />
+            {errors.password && touched.password && errors.password}
+            <input type="password" name="password" placeholder="Password..." value={values.password} onChange={handleChange} />
+            <input type="password" name="confirmPassword" placeholder="Confirm password..." value={values.confirmPassword} onChange={handleChange} />
+            <br/>
+            <DefaultButton text="Login" margin="auto" clicked={handleSubmit} />
+          </Form>
+        )}
       </Formik>
     </Content>
   )
