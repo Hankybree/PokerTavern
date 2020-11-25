@@ -4,12 +4,13 @@ import { Login, SignUp } from '../../index'
 import styled from 'styled-components'
 import './authpage.css'
 
-const Div = styled.div`
+const Content = styled.div `
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  margin: auto;
 `
-const SignUpButton = styled.input`
+
+const SignUpButton = styled.input `
   background: none;
   border: none;
 `
@@ -29,16 +30,16 @@ function AuthPage() {
   }
 
   return (
-    <Div>
-      <div id="content">
+    <div id="container">
+      <Content>
         <img id="logo" src={logo} alt="Logo" />
         <h1 id="headline">TavernPoker</h1>
-        <br/>
+        <br />
         {showLogin ? <Login /> : <SignUp />}
-        <br/>
+        <br />
         <SignUpButton type="button" value={signUpButtonText} onClick={signUpButtonPressed} />
-      </div>
-    </Div>
+      </Content>
+    </div>
   )
 }
 

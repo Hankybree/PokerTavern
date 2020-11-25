@@ -1,13 +1,19 @@
 // import logo from '../../../assets/images/logo.png'
-import { DefaultButton } from '../../index'
-// import styled from 'styled-components'
+import { Menu, Table } from '../../index'
+import styled from 'styled-components'
 import './lobbypage.css'
+
+const Content = styled.div `
+  display: flex;
+`
 
 function LobbyPage() {
   return (
     <div id="container">
-      Lobby
-      <DefaultButton text="Lobby" margin="auto" clicked={() => {console.log('Lobby yo')}} />
+      <Content>
+        <Menu/>
+        <Table/>
+      </Content>
     </div>
   )
 }

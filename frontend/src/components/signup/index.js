@@ -1,11 +1,11 @@
 import { Formik } from 'formik'
 import styled from 'styled-components'
-import { DefaultButton } from '../index'
+import { SubmitButton } from '../index'
 
-const Content = styled.div`
+const Content = styled.div `
   width: 30vw;
 `
-const Form = styled.form`
+const Form = styled.form `
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -31,7 +31,7 @@ function SignUp() {
           return errors
         }}
         onSubmit={(values) => {
-          console.log(values)
+          PostSignUp(values.username, values.password)
         }}>
         {({ values, errors, touched, handleSubmit, handleChange }) => (
           <Form onSubmit={handleSubmit}>
@@ -40,13 +40,34 @@ function SignUp() {
             {errors.password && touched.password && errors.password}
             <input type="password" name="password" placeholder="Password..." value={values.password} onChange={handleChange} />
             <input type="password" name="confirmPassword" placeholder="Confirm password..." value={values.confirmPassword} onChange={handleChange} />
-            <br/>
-            <DefaultButton text="Login" margin="auto" clicked={handleSubmit} />
+            <br />
+            <SubmitButton text="Login" margin="auto"/>
           </Form>
         )}
       </Formik>
     </Content>
   )
+}
+
+function PostSignUp(username, password) {
+  fetch('http://195.201.32.3:4000/auth/signup', {
+    body: JSON.stringify({
+      userName: username,
+      userPassword: password
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST'
+  }).then(response => response.json())
+    .then(result => {
+      alert(result.msg)
+      if (result.status === 1) {
+        window.location.reload()
+      }
+    }).catch(err => {
+      alert(err)
+    })
 }
 
 export default SignUp

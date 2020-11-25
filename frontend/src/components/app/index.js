@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { AuthPage, LobbyPage, GamePage } from '../index'
-
-//import logo from '../../assets/images/logo.png';
-import './app.css';
+import { AuthPage, LobbyPage, TablePage } from '../index'
+import './app.css'
 
 function App() {
   return (
@@ -10,12 +8,12 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/"><AuthPage/></Route>
+          <Route path="/lobby/:id"><TablePage/></Route>
           <Route path="/lobby"><LobbyPage/></Route>
-          <Route path="/lobby/:id"><GamePage/></Route>
         </Switch>
       </Router>
     </div>
   )
 }
 
-export default App;
+export default App

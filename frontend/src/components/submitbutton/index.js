@@ -9,10 +9,10 @@ const Input = styled.input `
   margin: ${(props) => props.margin};
 `
 
-function DefaultButton(props) {
+function SubmitButton(props) {
   return (
     <Input type="submit" margin={props.margin || 0} value={props.text}/>
   )
 }
 
-export default DefaultButton
+export default SubmitButton
