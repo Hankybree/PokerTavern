@@ -10,7 +10,7 @@ router.get('/validate', authUser, (req, res) => {
 
 router.post('/login', (req, res) => {
   mySql.query('SELECT * FROM users WHERE userName=?', [req.body.userName], (err, users) => {
-    if (err) throw err
+    if (err) return res.send({ status: 3, msg: err })
 
     if (users.length === 0) {
       return res.send({ status: 2, msg: 'Incorrect username or password' })
@@ -38,14 +38,14 @@ router.post('/signup', (req, res) => {
   }
 
   mySql.query('SELECT * FROM users WHERE userName=?', [req.body.userName], (err, users) => {
-    if (err) throw err
+    if (err) return res.send({ status: 3, msg: err })
 
     if (users.length != 0) {
       return res.send({ status: 2, msg: 'User already exist' })
     }
 
     mySql.query('INSERT INTO users (userName, userPassword) VALUES (?, ?)', [req.body.userName, req.body.userPassword], (err) => {
-      if (err) throw err
+      if (err) return res.send({ status: 3, msg: err })
 
       return res.send({ status: 1, msg: 'User created!' })
     })

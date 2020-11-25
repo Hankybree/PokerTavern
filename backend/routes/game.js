@@ -51,4 +51,12 @@ function authSession(req) {
   })
 }
 
+router.get('/tables', authUser, (req, res) => {
+  mySql.query('SELECT * FROM tables', (err, tables) => {
+    if (err) return res.send({ status: 3, msg: err })
+
+    return res.send({ status: 1, msg: 'Success', tables })
+  })
+})
+
 module.exports = router

@@ -17,7 +17,9 @@ module.exports = server
 // Routes
 
 const authRoute = require('./routes/auth')
-const tableRoute = require('./routes/table')
+const gameRoute = require('./routes/game')
+const profileRoute = require('./routes/profile')
 
 app.use('/auth', authRoute)
-app.use('/table', tableRoute)
+app.use('/game', gameRoute)
+app.use('/profile', profileRoute)
