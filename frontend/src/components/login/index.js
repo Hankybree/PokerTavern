@@ -47,10 +47,11 @@ function PostLogin(username, password) {
   }).then(response => response.json())
     .then(result => {
       alert(result.msg)
-      console.log(result)
       if (result.status === 1) {
         localStorage.setItem('token', 'Bearer ' + result.token)
-        localStorage.setItem('user', JSON.stringify(result.user))
+        localStorage.setItem('id', result.user.userId)
+        localStorage.setItem('name', result.user.userName)
+        localStorage.setItem('credits', result.user.userCredits)
         window.location.replace('http://localhost:3000/lobby')
       }
     }).catch(err => {

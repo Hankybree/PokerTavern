@@ -19,7 +19,7 @@ function AuthPage() {
   const [showLogin, setShowLogin] = useState(true)
   const [signUpButtonText, setSignUpButtonText] = useState('No account? Sign up!')
 
-  function signUpButtonPressed() {
+  function toggleSignUpUi() {
     if (showLogin) {
       setShowLogin(false)
       setSignUpButtonText('Go back')
@@ -37,7 +37,7 @@ function AuthPage() {
         <br />
         {showLogin ? <Login /> : <SignUp />}
         <br />
-        <SignUpButton type="button" value={signUpButtonText} onClick={signUpButtonPressed} />
+        <SignUpButton type="button" value={signUpButtonText} onClick={toggleSignUpUi} />
       </Content>
     </div>
   )

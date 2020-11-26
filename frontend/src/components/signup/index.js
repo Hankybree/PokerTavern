@@ -41,7 +41,7 @@ function SignUp() {
             <input type="password" name="password" placeholder="Password..." value={values.password} onChange={handleChange} />
             <input type="password" name="confirmPassword" placeholder="Confirm password..." value={values.confirmPassword} onChange={handleChange} />
             <br />
-            <SubmitButton text="Login" margin="auto"/>
+            <SubmitButton text="Sign up" margin="auto"/>
           </Form>
         )}
       </Formik>

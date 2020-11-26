@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
-// import './defaultbutton.css'
-const Input = styled.input `
-  width: 50px;
+const Input = styled.input`
+  width: 100px;
   border-radius: 1em;
   border: solid 2px black;
   background-color: white;
@@ -11,7 +10,7 @@ const Input = styled.input `
 
 function SubmitButton(props) {
   return (
-    <Input type="submit" margin={props.margin || 0} value={props.text}/>
+    <Input type="submit" margin={props.margin || 0} value={props.text} />
   )
 }
 
