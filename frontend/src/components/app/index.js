@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { AuthPage, LobbyPage, TablePage } from '../index'
+import { AuthPage, LobbyPage, TablePage } from '../../pages'
 import './app.css'
 
 function App() {

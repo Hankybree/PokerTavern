@@ -1,5 +1,5 @@
 // import logo from '../../../assets/images/logo.png'
-import { Menu, Table } from '../../index'
+import { Menu, Table } from '../../components'
 import styled from 'styled-components'
 import './lobbypage.css'
 

@@ -1,6 +1,6 @@
-import logo from '../../../assets/images/logo.png'
+import logo from '../../assets/images/logo.png'
 import { useState } from 'react'
-import { Login, SignUp } from '../../index'
+import { Login, SignUp } from '../../components'
 import styled from 'styled-components'
 import './authpage.css'
 
