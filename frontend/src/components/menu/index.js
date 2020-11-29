@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useContext, useEffect, useState } from 'react'
 import { Credits } from '../index'
+import { connect } from '../../services/client'
 import CreditContext from '../../creditcontext'
 
 const Content = styled.div`
@@ -9,6 +10,8 @@ const Content = styled.div`
   width: 25vw;
   min-height: 100vh;
   background-color: rgba(255, 255, 255, 0.459);
+  padding-left: 20px;
+  padding-right: 20px;
 `
 
 const Header = styled.h1`
@@ -22,7 +25,6 @@ function Menu() {
   const [tables, setTables] = useState(null)
 
   useEffect(() => {
-    console.log('Called')
     setCredits(localStorage.getItem('credits'))
     getTables()
       .then((tables) => {
@@ -32,11 +34,12 @@ function Menu() {
 
   return (
     <Content>
+      <Header>Welcome {localStorage.getItem('name')}!</Header>
       <Header>Handle credits</Header>
-      Credits: {credits && credits}
+      <p>Credits: {credits && credits}</p>
       <Credits />
       <Header>Available tables</Header>
-      {tables && tables.map(table => <div key={table.tableId}>{table.tableName + ' ' + table.tableActivePlayers + '/' + table.tableMaxPlayers}</div>)}
+      {tables && tables.map(table => <div key={table.tableId} onClick={() => {connect(table.tableId)}}>{table.tableName + ' ' + table.tableActivePlayers + '/' + table.tableMaxPlayers}</div>)}
       <input type="button" value="Log out" onClick={logout} />
     </Content>
   )

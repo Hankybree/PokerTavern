@@ -14,7 +14,11 @@ mySqlConnection.connect((err) => {
   if (err) {
     console.log(err)
   } else {
-    console.log('MySql connected')
+    mySqlConnection.query('DELETE FROM tables', (err) => {
+      if (err) console.log(err)
+
+      console.log('MySql connected')
+    })
   }
 });
 
