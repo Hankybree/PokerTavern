@@ -11,11 +11,11 @@ export function connect(tableId) {
   socket.onopen = () => {
     console.log('Connected')
     isConnected = true
-    socket.send('Hello server')
+    socket.send({ status: 1 })
   }
 
   socket.onmessage = (message) => {
-    console.log(message.data)
+    console.log(JSON.parse(message.data))
     //socket.send('EXIT')
   }
 

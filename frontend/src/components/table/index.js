@@ -1,16 +1,21 @@
+import table from '../../assets/images/pokertable.png'
 import styled from 'styled-components'
 
 const Content = styled.div`
+  display: flex;
   flex-grow: 1;
   min-height: 100vh;
+  background-color: grey;
+`
+const TableImg = styled.img`
+  width: 75vw;
   margin: auto;
-  background-color: red;
 `
 
 function Table() {
   return (
     <Content>
-      Table
+      <TableImg src={table} alt="Table" />
     </Content>
   )
 }

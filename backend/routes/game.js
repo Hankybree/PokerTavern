@@ -59,13 +59,32 @@ router.post('/host', authUser, (req, res) => {
     tables.push(table)
 
     let clients = []
+    let tableState = { players: [] }
 
     wss.on('connection', (socket, req) => {
+      // clients.forEach(client => {
+      //   if (client.user.userId === req.user.userId) {
+      //     console.log('Already sitting at table')
+      //     socket.close()
+      //     return
+      //   }
+      // })
       console.log(req.socket.remoteAddress + ' has connected')
       console.log(wss.clients.size + ' clients connected')
 
-      socket.user = req.user
-      clients.push(socket)
+      // Sends initial data
+      mySql.query('SELECT userCredits FROM users WHERE userId=?', [req.user.userId], (err, credits) => {
+        if (err) console.log(err)
+
+        delete req.user.exp
+        delete req.user.iat
+        socket.user = req.user
+        socket.user.credits = credits[0].userCredits
+        clients.push(socket)
+        tableState.players.push(socket.user)
+
+        sendMessage(tableState, clients)
+      })
 
       mySql.query('UPDATE tables SET tableActivePlayers=tableActivePlayers+1 WHERE tableId=?', [tableId], (err) => {
         if (err) console.log(err)
@@ -74,13 +93,12 @@ router.post('/host', authUser, (req, res) => {
       socket.onmessage = (message) => {
         clients.forEach(client => {
           // Send out message
-          console.log(message.data)
-          client.send('Hi')
+
         })
       }
 
       socket.onclose = () => {
-        if (socket.user.userName === table.host) {
+        if (req.user.userName === table.host) {
           console.log('Table shutdown')
           closeTable(wss, table)
         } else {
@@ -107,6 +125,12 @@ router.get('/tables', authUser, (req, res) => {
     return res.send({ status: 1, msg: 'Success', tables })
   })
 })
+
+function sendMessage(message, clients) {
+  clients.forEach(client => {
+    client.send(JSON.stringify(message))
+  })
+}
 
 function closeTable(wss, table) {
   mySql.query('DELETE FROM tables WHERE tableId=?', [table.tableId], (err) => {

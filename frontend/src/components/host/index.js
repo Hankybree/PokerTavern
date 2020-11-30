@@ -37,11 +37,11 @@ function Host() {
       <input type="button" value={hostButtonText + " host UI"} onClick={toggleHostUi} />
       {showHost && (
         <Formik
-          initialValues={{ name: '', maxPlayers: 10 }}
+          initialValues={{ name: '', maxPlayers: 0 }}
           validate={(values) => {
             const errors = {}
 
-            if (!values.name && !values.maxPlayers) {
+            if (!values.name || !values.maxPlayers) {
               errors.required = 'Specify name and max number of players'
             }
             if (values.maxPlayers < 2 || values.maxPlayers > 10) {
@@ -55,7 +55,7 @@ function Host() {
           }}>
           {({ values, errors, touched, handleSubmit, handleChange }) => (
             <Form onSubmit={handleSubmit}>
-              {errors.required && touched.required && errors.required}
+              {errors.required && touched.name && touched.maxPlayers && errors.required}
               {errors.maxPlayers && touched.maxPlayers && errors.maxPlayers}
               <input type="text" name="name" placeholder="Table name..." value={values.credits} onChange={handleChange} />
               <input type="number" name="maxPlayers" placeholder="Max number of players..." value={values.credits} onChange={handleChange} />
