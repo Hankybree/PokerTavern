@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import CreditContext from '../../creditcontext'
+import CreditContext from '../../contexts/creditcontext'
 import { AuthPage, LobbyPage, TablePage } from '../../pages'
 import { useState } from 'react'
 import './app.css'

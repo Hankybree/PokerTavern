@@ -2,7 +2,7 @@ import { Formik } from 'formik'
 import styled from 'styled-components'
 import { useState, useContext } from 'react'
 import { SubmitButton } from '../index'
-import CreditContext from '../../creditcontext'
+import CreditContext from '../../contexts/creditcontext'
 
 const Content = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ function Credits() {
             return errors
           }}
           onSubmit={(values) => {
-            SetCredits(values.credits, toggleCreditUi, creditContext)
+            setPlayerCredits(values.credits, toggleCreditUi, creditContext)
           }}>
           {({ values, errors, touched, handleSubmit, handleChange }) => (
             <Form onSubmit={handleSubmit}>
@@ -62,7 +62,7 @@ function Credits() {
   )
 }
 
-function SetCredits(credits, toggleCreditUi, creditContext) {
+function setPlayerCredits(credits, toggleCreditUi, creditContext) {
   fetch('http://195.201.32.3:4000/profile/credits', {
     body: JSON.stringify({
       credits

@@ -54,7 +54,7 @@ router.post('/host', authUser, (req, res) => {
 
     const wss = new WebSocketServer({ noServer: true })
 
-    const table = { wss, path: '/' + tableId }
+    const table = { wss, path: '/' + tableId, host: req.user.userName, tableId }
 
     tables.push(table)
 
@@ -67,14 +67,11 @@ router.post('/host', authUser, (req, res) => {
       socket.user = req.user
       clients.push(socket)
 
+      mySql.query('UPDATE tables SET tableActivePlayers=tableActivePlayers+1 WHERE tableId=?', [tableId], (err) => {
+        if (err) console.log(err)
+      })
+
       socket.onmessage = (message) => {
-        // Shuts down socket server
-        if (message.data === 'EXIT') {
-          wss.close()
-          wss.removeAllListeners()
-          tables.splice(tables.indexOf(table))
-          return
-        }
         clients.forEach(client => {
           // Send out message
           console.log(message.data)
@@ -83,15 +80,23 @@ router.post('/host', authUser, (req, res) => {
       }
 
       socket.onclose = () => {
-        console.log(req.socket.remoteAddress + ' has disconnected')
-        console.log(wss.clients.size + ' clients connected')
+        if (socket.user.userName === table.host) {
+          console.log('Table shutdown')
+          closeTable(wss, table)
+        } else {
+          mySql.query('UPDATE tables SET tableActivePlayers=tableActivePlayers-1 WHERE tableId=?', [tableId], (err) => {
+            if (err) console.log(err)
 
-        clients.splice(clients.indexOf(socket), 1)
-        socket.close()
+            console.log(req.socket.remoteAddress + ' has disconnected')
+            console.log(wss.clients.size + ' clients connected')
+            clients.splice(clients.indexOf(socket), 1)
+            socket.close()
+          })
+        }
       }
     })
 
-    return res.send({ status: 1, msg: 'Table created' })
+    return res.send({ status: 1, msg: 'Table created', tableId })
   })
 })
 
@@ -102,5 +107,15 @@ router.get('/tables', authUser, (req, res) => {
     return res.send({ status: 1, msg: 'Success', tables })
   })
 })
+
+function closeTable(wss, table) {
+  mySql.query('DELETE FROM tables WHERE tableId=?', [table.tableId], (err) => {
+    if (err) console.log(err)
+
+    wss.close()
+    wss.removeAllListeners()
+    tables.splice(tables.indexOf(table))
+  })
+}
 
 module.exports = router

@@ -1,8 +1,10 @@
 import styled from 'styled-components'
-import { useContext, useEffect, useState } from 'react'
-import { Credits } from '../index'
+import { useContext, useEffect } from 'react'
+import { Credits, Host } from '../index'
 import { connect } from '../../services/client'
-import CreditContext from '../../creditcontext'
+import { getTables } from '../../services/api'
+import CreditContext from '../../contexts/creditcontext'
+import TableContext from '../../contexts/tablecontext'
 
 const Content = styled.div`
   display: flex;
@@ -19,10 +21,15 @@ const Header = styled.h1`
   font-family: passionone;
 `
 
+const List = styled.div`
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px black;
+`
+
 function Menu() {
   const { credits, setCredits } = useContext(CreditContext)
-
-  const [tables, setTables] = useState(null)
+  const { tables, setTables } = useContext(TableContext)
 
   useEffect(() => {
     setCredits(localStorage.getItem('credits'))
@@ -30,7 +37,7 @@ function Menu() {
       .then((tables) => {
         setTables(tables)
       })
-  }, [setCredits])
+  }, [setCredits, setTables])
 
   return (
     <Content>
@@ -39,28 +46,13 @@ function Menu() {
       <p>Credits: {credits && credits}</p>
       <Credits />
       <Header>Available tables</Header>
-      {tables && tables.map(table => <div key={table.tableId} onClick={() => {connect(table.tableId)}}>{table.tableName + ' ' + table.tableActivePlayers + '/' + table.tableMaxPlayers}</div>)}
+      <Host />
+      <List>
+        {tables && tables.map(table => <div key={table.tableId} onClick={() => { connect(table.tableId) }}>{table.tableName + ' ' + table.tableActivePlayers + '/' + table.tableMaxPlayers}</div>)}
+      </List>
       <input type="button" value="Log out" onClick={logout} />
     </Content>
   )
-}
-
-function getTables() {
-  return new Promise((resolve) => {
-    fetch('http://195.201.32.3:4000/game/tables', {
-      headers: {
-        'authorization': localStorage.getItem('token')
-      },
-      method: 'GET'
-    })
-      .then(response => response.json())
-      .then(result => {
-        resolve(result.tables)
-      }).catch(err => {
-        alert(err)
-        resolve(null)
-      })
-  })
 }
 
 function logout() {
