@@ -1,6 +1,5 @@
 import { Menu, Table } from '../../components'
 import styled from 'styled-components'
-import './lobbypage.css'
 import TableContext from '../../contexts/tablecontext'
 import { useState } from 'react'
 

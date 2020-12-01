@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import CreditContext from '../../contexts/creditcontext'
 import { AuthPage, LobbyPage, TablePage } from '../../pages'
 import { useState } from 'react'
-import './app.css'
 
 function App() {
   const [credits, setCredits] = useState(null)
