@@ -6,7 +6,7 @@ export function connect(tableId) {
     return
   }
   const token = localStorage.getItem('token').split(' ')[1]
-  let socket = new WebSocket('ws://localhost:4000/' + tableId, token)
+  let socket = new WebSocket('ws://195.201.32.3:4000/' + tableId, token)
 
   socket.onopen = () => {
     console.log('Connected')

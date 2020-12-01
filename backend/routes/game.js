@@ -20,11 +20,21 @@ function authSession(req) {
   })
 }
 
+function clientAlreadyConnected(clients, req) {
+  let isConnected = false
+  clients.forEach(client => {
+    if (client.user.userId === req.user.userId) {
+      isConnected = true
+    }
+  })
+
+  return isConnected
+}
+
 server.on('upgrade', (req, socket, head) => {
   let authData = authSession(req)
 
   if (authData && authData === -1) {
-    console.log('Invalid session')
     socket.destroy()
     return
   }
@@ -59,16 +69,13 @@ router.post('/host', authUser, (req, res) => {
     tables.push(table)
 
     let clients = []
-    let tableState = { players: [] }
+    let tableState = { players: [], activePlayers: 0, maxPlayers: req.body.maxPlayers }
 
     wss.on('connection', (socket, req) => {
-      // clients.forEach(client => {
-      //   if (client.user.userId === req.user.userId) {
-      //     console.log('Already sitting at table')
-      //     socket.close()
-      //     return
-      //   }
-      // })
+      if (clientAlreadyConnected(clients, req) || tableState.activePlayers >= tableState.maxPlayers) {
+        socket.close()
+        return
+      }
       console.log(req.socket.remoteAddress + ' has connected')
       console.log(wss.clients.size + ' clients connected')
 
@@ -82,6 +89,7 @@ router.post('/host', authUser, (req, res) => {
         socket.user.credits = credits[0].userCredits
         clients.push(socket)
         tableState.players.push(socket.user)
+        tableState.activePlayers++
 
         sendMessage(tableState, clients)
       })
@@ -108,6 +116,7 @@ router.post('/host', authUser, (req, res) => {
             console.log(req.socket.remoteAddress + ' has disconnected')
             console.log(wss.clients.size + ' clients connected')
             clients.splice(clients.indexOf(socket), 1)
+            tableState.activePlayers--
             socket.close()
           })
         }

@@ -75,7 +75,7 @@ function hostGame(name, maxPlayers, toggleHostUi, setTables) {
     toggleHostUi()
     return
   }
-  fetch('http://localhost:4000/game/host', {
+  fetch('http://195.201.32.3:4000/game/host', {
     body: JSON.stringify({
       name,
       maxPlayers
